@@ -7,7 +7,7 @@ cmakepath ?= ${datadir}/cmake
 thisdir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
 PKGNAME := tegra-cmake-overrides
-PKGVER  := 1.0.0
+PKGVER  := 1.0.1
 
 all:
 	@:

@@ -1418,9 +1418,9 @@ macro(CUDA_WRAP_SRCS cuda_target format generated_files)
   if(_cuda_build_shared_libs)
     # If we are setting up code for a shared library, then we need to add extra flags for
     # compiling objects for shared libraries.
-    set(CUDA_HOST_SHARED_FLAGS ${CMAKE_SHARED_LIBRARY_${CUDA_C_OR_CXX}_FLAGS})
+    set(CUDA_HOST_SHARED_FLAGS ${CMAKE_${CUDA_C_OR_CXX}_COMPILER_ARG1} ${CMAKE_SHARED_LIBRARY_${CUDA_C_OR_CXX}_FLAGS})
   else()
-    set(CUDA_HOST_SHARED_FLAGS)
+    set(CUDA_HOST_SHARED_FLAGS ${CMAKE_${CUDA_C_OR_CXX}_COMPILER_ARG1})
   endif()
   # Only add the CMAKE_{C,CXX}_FLAGS if we are propagating host flags.  We
   # always need to set the SHARED_FLAGS, though.
