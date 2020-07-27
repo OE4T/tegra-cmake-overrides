@@ -1,0 +1,24 @@
+#!/bin/sh
+rm -f Makefile
+cmake_version=$(cmake --version 2>/dev/null | head -n1 | cut -d' ' -f3)
+if [ -z "${cmake_version}" ]; then
+    echo "ERR: cmake not in PATH" &>2
+    return 1
+fi
+cmake_major=$(echo $cmake_version | cut -d. -f1)
+cmake_minor=$(echo $cmake_version | cut -d. -f2)
+if [ -z "$cmake_major" -o -z "$cmake_minor" ]; then
+    echo "ERR: could not determine cmake version" &>2
+    return 1
+fi
+cmake_rm_supported=
+if [ $cmake_major -eq 3 ]; then
+    if [ $cmake_minor -gt 16 ]; then
+	cmake_rm_supported=yes
+    fi
+elif [ $cmake_major -gt 3 ]; then
+    cmake_rm_supported=yes
+fi
+sed -e "s,@CMAKE_RM_SUPPORTED@,$cmake_rm_supported,g" Makefile.in > Makefile
+
+

@@ -1,0 +1,38 @@
+.PHONY: all install clean dist distclean
+
+prefix ?= /usr
+exec_prefix ?= ${prefix}
+datadir ?= ${exec_prefix}/share
+cmakepath ?= ${datadir}/cmake
+
+PKGNAME := tegra-cmake-overrides
+PKGVER  := 1.0.2
+
+CMAKE_RM_SUPPORTED := @CMAKE_RM_SUPPORTED@
+
+ifeq ($(CMAKE_RM_SUPPORTED),yes)
+CMAKE_REMOVE := rm -f
+else
+CMAKE_REMOVE := remove
+endif
+
+FINDCUDA_FILES = $(wildcard Modules/FindCUDA/*.cmake)
+
+all:
+	sed -e's,!!REMOVE_CMD!!,$(CMAKE_REMOVE),g' Modules/FindCUDA.cmake.in > Modules/FindCUDA.cmake
+	sed -e's,!!REMOVE_CMD!!,$(CMAKE_REMOVE),g' Modules/FindCUDA/run_nvcc.cmake.in > Modules/FindCUDA/run_nvcc.cmake
+clean:
+	rm -f Modules/FindCUDA.cmake Modules/FindCUDA/run_nvcc.cmake
+
+install:
+	install -d $(DESTDIR)$(cmakepath)/Modules/FindCUDA
+	install -m 0644 Modules/FindCUDA.cmake $(DESTDIR)$(cmakepath)/Modules/
+	install -m 0644 Modules/FindCUDA/*.cmake $(DESTDIR)$(cmakepath)/Modules/FindCUDA/
+
+distclean: clean
+	rm -rf $(PKGNAME)-$(PKGVER)
+
+dist: distclean
+	mkdir $(PKGNAME)-$(PKGVER)
+	cp -R configure Makefile.in README.md LICENSE Modules $(PKGNAME)-$(PKGVER)/
+	tar -c -z -f $(shell pwd)/$(PKGNAME)-$(PKGVER).tar.gz $(PKGNAME)-$(PKGVER)

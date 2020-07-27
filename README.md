@@ -17,3 +17,17 @@ minor modifications that fix issues with cross builds:
 Even though CMake's FindCUDA module has been deprecated in favor
 of CUDA language support and the FindCUDAToolkit module for some
 time, many applications still use FindCUDA.
+
+## Building
+
+Prerequisite: You must have the `cmake` command in your PATH.
+
+1. Run the `./configure` script to create the Makefile.
+2. `make all`
+
+## Installing
+
+Once built, just use `make install` to install the default
+system root and prefix.  You can specify an alternate root
+by passing `DESTDIR=<path>` on the command, and an alternate
+prefix with `prefix=<path>`.
