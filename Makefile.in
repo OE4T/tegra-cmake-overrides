@@ -6,7 +6,7 @@ datadir ?= ${exec_prefix}/share
 cmakepath ?= ${datadir}/cmake
 
 PKGNAME := tegra-cmake-overrides
-PKGVER  := 1.0.2
+PKGVER  := 1.0.3
 
 CMAKE_RM_SUPPORTED := @CMAKE_RM_SUPPORTED@
 
